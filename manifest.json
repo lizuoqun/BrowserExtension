@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "modify-plugin",
+  "version": "0.0.1",
+  "description": "modify-plugin description",
+  "author": "modify",
+  "action": {
+    "default_icon": {
+      "16": "plugin.png",
+      "32": "plugin.png",
+      "48": "plugin.png",
+      "64": "plugin.png",
+      "128": "plugin.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "plugin.png",
+    "32": "plugin.png",
+    "48": "plugin.png",
+    "64": "plugin.png",
+    "128": "plugin.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }
+  ]
+}
