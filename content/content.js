@@ -59,3 +59,38 @@ waitForElement(targetSelector, (my_site) => {
     console.log('我被点了');
   });
 });
+
+
+chrome.runtime.sendMessage({
+  type: 'TO_BACKGROUND',
+  data: {
+    pageUrl: window.location.href,
+    message: '你好，我是content script TO_BACKGROUND！'
+  }
+}).then(res => {
+  console.log('TO_BACKGROUND后台回复的消息', res);
+}).catch(err => {
+  console.log('TO_BACKGROUND出错了', err);
+});
+
+const head = document.querySelector('.head_wrapper');
+console.log('head:', head);
+
+head.addEventListener('click', function (e) {
+  e.preventDefault();
+  console.log('我被点了');
+
+  chrome.runtime.sendMessage({
+    type: 'TO_POPUP',
+    data: {
+      pageUrl: window.location.href,
+      message: '你好，我是content script TO_POPUP！',
+      time: new Date().toLocaleString()
+    }
+  }).then(res => {
+    console.log('TO_POPUP后台回复的消息', res);
+  }).catch(err => {
+    console.log('TO_POPUP出错了', err);
+  });
+});
+
