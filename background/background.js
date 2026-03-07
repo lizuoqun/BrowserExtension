@@ -1,15 +1,15 @@
 // 监听来自 content script 的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // 打印收到的消息和发送者信息
-  console.log("收到content script的消息：", message);
-  console.log("发送者信息：", sender); // sender包含标签页、frame等信息
+  console.log('收到content script的消息：', message);
+  console.log('发送者信息：', sender); // sender包含标签页、frame等信息
 
   // 验证消息类型（可选，用于区分不同业务的消息）
-  if (message.type === "TO_BACKGROUND") {
+  if (message.type === 'TO_BACKGROUND') {
     // 构造回复数据
     const reply = {
-      status: "success",
-      message: "你好，我是service worker！已收到你的消息",
+      status: 'success',
+      message: '你好，我是service worker！已收到你的消息',
       receivedData: message.data // 回显收到的数据
     };
 
@@ -23,4 +23,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   //   sendResponse({ status: "success", message: "异步回复" });
   // }, 1000);
   // return true;
+});
+
+
+// 监听插件图标的点击事件（不配置default_popup）
+chrome.action.onClicked.addListener(() => {
+  // 打开插件的options页面
+  chrome.runtime.openOptionsPage().catch((error) => {
+    // 异常处理：如果openOptionsPage失败，手动拼接URL打开
+    console.error('打开选项页面失败:', error);
+    const optionsUrl = chrome.runtime.getURL('popup/options.html');
+    chrome.tabs.create({url: optionsUrl});
+  });
 });
