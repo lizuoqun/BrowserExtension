@@ -94,3 +94,22 @@ head.addEventListener('click', function (e) {
   });
 });
 
+// 监听来自Popup的消息
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log('收到来自Popup的消息：', message);
+
+  // 判断消息类型并处理
+  if (message.type === 'POPUP_MESSAGE') {
+    // 模拟处理逻辑
+    const replyMessage = `已收到消息：${message.data}，当前页面标题是「${document.title}」`;
+
+    // 向Popup发送响应（sendResponse必须同步调用，异步需返回true）
+    sendResponse({
+      success: true,
+      message: replyMessage
+    });
+  }
+
+  // 如果需要异步处理，需返回true（比如调用API后再回复）
+  // return true;
+});

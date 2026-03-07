@@ -30,3 +30,56 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 storageChange();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const sendBtn = document.getElementById('btn-content');
+
+  sendBtn.addEventListener('click', async () => {
+    try {
+      // 1. 获取当前激活的标签页（需要tabs权限）
+      const [activeTab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      });
+
+      if (!activeTab.id) {
+        console.warn("无法获取当前标签页ID")
+        return;
+      }
+
+      // 2. 向content script发送消息
+      const response = await chrome.tabs.sendMessage(activeTab.id, {
+        type: 'POPUP_MESSAGE',
+        data: '这是来自Popup的消息',
+        timestamp: new Date().getTime()
+      });
+
+      // 3. 接收content script的响应并提示
+      console.log(`Content Script响应：${response.message}`)
+    } catch (error) {
+      // 常见错误：当前页面没有注入content script
+      console.error(`Content Script响应：${error.message}`)
+    }
+  });
+
+  const sendBtn2 = document.getElementById('btn-service');
+
+  sendBtn2.addEventListener('click', async () => {
+    try {
+      // 2. 向content script发送消息
+      const response = await chrome.runtime.sendMessage( {
+        type: 'POPUP_MESSAGE',
+        data: {
+          message: '你好，Service Worker！',
+          time: new Date().toLocaleTimeString()
+        }
+      });
+      // 3. 接收content script的响应并提示
+      console.log("Service worker 响应", response)
+    } catch (error) {
+      // 常见错误：当前页面没有注入content script
+      console.error("Service worker 响应失败", error)
+    }
+  });
+});

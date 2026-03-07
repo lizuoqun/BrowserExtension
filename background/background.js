@@ -15,6 +15,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     // 发送回复（注意：如果是异步操作，需要返回true保持端口开放）
     sendResponse(reply);
+  } else if (message.type === 'POPUP_MESSAGE') {
+    const replyContent = `已收到你的消息「${message.data.message}」，时间：${message.data.time}`;
+
+    // 向popup发送响应（同步回复）
+    sendResponse({
+      success: true,
+      reply: replyContent
+    });
   }
 
   // 🌟 重要：如果 sendResponse 在异步操作中调用，必须返回 true
