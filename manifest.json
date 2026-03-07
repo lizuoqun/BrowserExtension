@@ -39,7 +39,9 @@
     "service_worker": "background/background.js"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "contextMenus",
+    "activeTab"
   ],
   "options_ui": {
     "page": "popup/options.html",

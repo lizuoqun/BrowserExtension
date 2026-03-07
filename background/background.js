@@ -1,3 +1,5 @@
+importScripts('./menu.js');
+
 // 监听来自 content script 的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // 打印收到的消息和发送者信息
@@ -37,10 +39,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // 监听插件图标的点击事件（不配置default_popup）
 chrome.action.onClicked.addListener(() => {
   // 打开插件的options页面
-  chrome.runtime.openOptionsPage().catch((error) => {
+  chrome.runtime.openOptionsPage().catch(async (error) => {
     // 异常处理：如果openOptionsPage失败，手动拼接URL打开
     console.error('打开选项页面失败:', error);
     const optionsUrl = chrome.runtime.getURL('popup/options.html');
-    chrome.tabs.create({url: optionsUrl});
+    await chrome.tabs.create({url: optionsUrl});
   });
+});
+
+/**************************************生命周期************************************************************/
+chrome.runtime.onInstalled.addListener((details) => {
+  console.log('插件已安装或更新：', details);
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  console.log('插件已启动');
 });
