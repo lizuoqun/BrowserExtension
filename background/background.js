@@ -1,4 +1,4 @@
-importScripts('./menu.js');
+importScripts('./menu.js', './alarms.js');
 
 // 监听来自 content script 的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

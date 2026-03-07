@@ -1,4 +1,4 @@
-chrome.runtime.onInstalled.addListener(async (details) => {
+chrome.runtime.onInstalled.addListener(async () => {
   await chrome.contextMenus.removeAll();
 
   chrome.contextMenus.create({

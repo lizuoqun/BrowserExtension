@@ -41,7 +41,8 @@
   "permissions": [
     "storage",
     "contextMenus",
-    "activeTab"
+    "activeTab",
+    "alarms"
   ],
   "options_ui": {
     "page": "popup/options.html",
